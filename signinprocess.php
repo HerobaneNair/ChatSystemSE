@@ -11,20 +11,7 @@ function attemptCheck() {
 
 session_start();
 
-$db_server = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "chat_system";
-
-$conn = mysqli_connect(
-    $db_server,
-    $db_user,
-    $db_pass,
-    $db_name);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'connect.php';
 
 $uname = $_POST["uname"];
 $psw = $_POST["psw"];
@@ -33,18 +20,18 @@ $term = filter_input(INPUT_POST, "terms", FILTER_VALIDATE_BOOL);
 
 $sql = "SELECT `uuid` FROM `users` 
         WHERE `username` = '$uname' AND password_hash = '$psw'";
-$result = $conn->query($sql);
 
-echo gettype($result);
-$tresult = mysqli_fetch_assoc($result);
-echo "$tresult";
+$result = mysqli_query($conn, $sql);
 
 if ($result->num_rows > 0) {
-    $result = mysqli_fetch_assoc($result);
-    echo $result;
-    $_SESSION['uuid'] = "$result";
+    $tresult = mysqli_fetch_assoc($result);
+    $_SESSION["uuid"] = $tresult["uuid"];
+    echo $_SESSION["uuid"];
+    header('Location: Chat_System.php');
+    exit;
 } else {
     attemptCheck();
-    echo "Error, invalid username/pass";
+    header('Location: Login.html');
+    exit;
 }
 #var_dump($uname, $psw, $remember);
