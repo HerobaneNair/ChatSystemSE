@@ -15,8 +15,6 @@ include 'connect.php';
 
 $uname = $_POST["uname"];
 $psw = $_POST["psw"];
-$remember = $_POST["remember"];
-$term = filter_input(INPUT_POST, "terms", FILTER_VALIDATE_BOOL);
 
 $sql = "SELECT `uuid` FROM `users` 
         WHERE `username` = '$uname' AND password_hash = '$psw'";
@@ -33,6 +31,6 @@ if ($result->num_rows > 0) {
     header('Location: Login.html');
     exit;
 }
-#var_dump($uname, $psw, $remember);
+#var_dump($uname, $psw);
 
 ?>
