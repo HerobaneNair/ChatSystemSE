@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Application</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
 </head>
+
 <body>
     <dropdown>
         <title>Static Dropdown List</title>
