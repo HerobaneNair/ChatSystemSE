@@ -1,0 +1,27 @@
+<chatbox>
+    <label for="chatBox">Message History:</label>
+    <textarea type="text" id="chatBox" name="chatBox" cols="75" rows="25" disabled>Placeholder for reading data from chat history</textarea>
+    <br><br><br>
+</chatbox>
+
+<sendBox>
+    <label for="textBox">Text Box:</label>
+    <textarea type="text" id="sendBox" name="sendBox" cols="50" rows="1"></textarea>
+    <button type="submit" id="submitBtn">Send</button>
+</sendBox>
+
+<script>
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        // Get the message from the sendBox
+        var sendBoxText = document.getElementById('sendBox').value;
+        
+        // Get the chatBox
+        var chatBox = document.getElementById('chatBox');
+        
+        // Append the text from sendBox to the mainBox
+        chatBox.value += "\n" + "UserName Placeholder:" + sendBoxText;
+        
+        // Clear the sendBox after sending
+        document.getElementById('sendBox').value = '';
+    });
+</script>
