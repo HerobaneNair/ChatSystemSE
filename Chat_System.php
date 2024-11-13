@@ -37,9 +37,11 @@
         //This should be where i can put message history
         function updateChatBox() {
             chatBox.value = "Message history with: " + chatSelect.options[chatSelect.selectedIndex].text + "\n\n";
-            var chatSelect_id = chatSelect.options[chatSelect.selectedIndex];
-            $.post('dropdown_read.php',{chat_id:chatSelect_id});
-            var message_array = <?php echo $_SESSION['messages']; ?>;
+            var chatSelect_id = chatSelect.selectedIndex;
+            $.post('dropdown_read.php', {chat_id:chatSelect_id}, function(response)) {
+                console.log(response);
+            }
+            var message_array = <?php include 'message_array.php'; ?>;
             message_array.forEach((message) => ) {
                 chatBox.value += message + '\n';
             }

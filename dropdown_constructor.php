@@ -39,8 +39,14 @@ if ($result === false) {
     die("Error: " . $conn->error);
 }
 
+$message_array = array();
+
 while ($row_values = $result->fetch_assoc()) {
     $str_output = "<option value=\"" . $row_values["chat_id"] . "\">" . $row_values["username"] . "</option>";
+    $message_array[] = $row_values["chat_id"];
     echo $str_output;
 }
 
+$javascript_message_array = json_encode($message_array);
+
+?>

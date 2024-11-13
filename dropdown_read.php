@@ -1,16 +1,18 @@
 <?php
 
-include 'connect.php';
-
 session_start();
+
+include 'connect.php';
 
 $chat_id = $_POST['chat_id'];
 
-$sql = "SELECT `content` FROM `messages` 
+$sql = "SELECT `content` 
+        FROM `messages` 
         WHERE `chat_id` = '$chat_id'
         ORDER BY chat_id";
 
 $result = $conn->query($sql);
+
 $message_array = array();
 
 while ($row_values = $result->fetch_assoc()) {
@@ -18,3 +20,5 @@ while ($row_values = $result->fetch_assoc()) {
 }
 
 $_SESSION['messages'] = json_encode($message_array);
+
+?>
