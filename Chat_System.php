@@ -7,6 +7,7 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <body>
     <dropdown>
@@ -40,14 +41,13 @@
         //This should be where i can put message history
         function updateChatBox() {
             chatBox.value = "Message history with: " + chatSelect.options[chatSelect.selectedIndex].text + "\n\n";
-            var chatSelect_id = chatSelect.selectedIndex;
-            $.post('dropdown_read.php', {chat_id:chatSelect_id}, function(response)) {
-                console.log(response);
-            }
-            var message_array = <?php include 'message_array.php'; ?>;
-            message_array.forEach((message) => ) {
-                chatBox.value += message + '\n';
-            }
+            var chatSelect_id = chatSelect.value;
+            $.post('dropdown_read.php', {chat_id: chatSelect_id}, function(response) {
+                const messages = JSON.parse(response);
+                messages.forEach((message) => {
+                    chatBox.value += message + "\n";
+                });
+            });
         }
 
         // Add a change event listener to clear and update chatBox based on selected user

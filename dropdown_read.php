@@ -14,17 +14,15 @@ $sql = "SELECT `content`
 
 $result = $conn->query($sql);
 
-if ($result === false) {
-    die("Error: " . $conn->error);
-}
-
 $message_array = array();
 
-while ($row_values = $result->fetch_assoc()) {
-    $echo = $row_values['content'];
-    $message_array[] = $row_values['content'];
+if ($result) {
+    while ($row_values = $result->fetch_assoc()) {
+        $message_array[] = $row_values['content'];
+    }
+    echo json_encode($message_array);
+} else {
+    echo json_encode([]);
 }
-
-$_SESSION['messages'] = json_encode($message_array);
 
 ?>
