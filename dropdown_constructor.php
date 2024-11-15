@@ -42,7 +42,7 @@ if ($result === false) {
 $message_array = array();
 
 while ($row_values = $result->fetch_assoc()) {
-    $str_output = "<option value=\"" . $row_values["chat_id"] . "\">" . $row_values["username"] . "</option>";
+    $str_output = "<option value=\"" . $row_values["chat_id"] . "\">" . $row_values["username"] . "</option>\n\t\t\t";
     $message_array[] = $row_values["chat_id"];
     echo $str_output;
 }

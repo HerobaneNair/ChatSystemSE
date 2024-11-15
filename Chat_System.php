@@ -63,7 +63,7 @@
 
             // Append the text from sendBox to the chatBox
             //This should be where i can send from the text box to the database
-            chatBox.value += "\n" + "UserID Placeholder" + ": " + sendBoxText;
+            chatBox.value += "\n" + <?php echo $_SESSION["username"]; ?> + ": " + sendBoxText;
 
             // Clear the sendBox after sending
             //This might be where i could put the message history as well
