@@ -64,7 +64,11 @@
             // Append the text from sendBox to the chatBox
             //This should be where i can send from the text box to the database
             chatBox.value += "\n" + <?php echo $_SESSION["username"]; ?> + ": " + sendBoxText;
-
+            var chatStorage_id = chatSelect.value;
+            //This is where the problem for saving to the database lies. Something is going wrong between here to the php file.
+            $.post('message_storage.php', {chat_id: chatStorage_id, content: sendBoxText}, function(response) {
+                const check = 'nothing';
+            });
             // Clear the sendBox after sending
             //This might be where i could put the message history as well
             document.getElementById('sendBox').value = '';
