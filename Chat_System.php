@@ -65,9 +65,11 @@
             //This should be where i can send from the text box to the database
             chatBox.value += "\n" + <?php echo $_SESSION["username"]; ?> + ": " + sendBoxText;
             var chatStorage_id = chatSelect.value;
+            var userid = <?php echo json_encode($_SESSION['uuid']);?>;
             //This is where the problem for saving to the database lies. Something is going wrong between here to the php file.
-            $.post('message_storage.php', {chat_id: chatStorage_id, content: sendBoxText}, function(response) {
-                const check = 'nothing';
+            console.log("Sending data:", { chat_id: chatStorage_id, uuid: userid, content: sendBoxText });
+            $.post('message_storage.php', {chat_id: chatStorage_id, uuid: userid, content: sendBoxText}, function(response) {
+                console.log("Response: ", response);
             });
             // Clear the sendBox after sending
             //This might be where i could put the message history as well
