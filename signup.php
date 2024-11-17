@@ -15,25 +15,32 @@ $tresult = mysqli_fetch_assoc($result);
 echo "$tresult";
 
 if ($psw != $cpsw){
-    echo "PASSWORDS DO NOT MATCH";
+    $message = "PASSWORDS DO NOT MATCH";
+    echo "<script type='text/javascript'>alert('$message');</script>";
+    header('Location: SignupForm.html');
     exit;
 }
 if ($result->num_rows != 0) {
-    echo "USERNAME TAKEN";
+    $message = "USERNAME TAKEN";
+    echo "<script type='text/javascript'>alert('$message');</script>";
+    header('Location: SignupForm.html');
     exit;
 }
 if ($psw == $cpsw and $result->num_rows == 0){
     if (isset($_POST["uname"], $_POST["psw"])) {
         echo "Received data: uname = " . $_POST["uname"] . ", psw = " . $_POST["psw"];
     } else {
-        echo "POST data not received properly";
+        $message = "POST data not received properly";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+        header('Location: SignupForm.html');
         exit;
     }
-    echo "YOU DID IT. LOG IN NOW";
+    $message = "YOU DID IT. LOG IN NOW";
+    echo "<script type='text/javascript'>alert('$message');</script>";
 }
 $sql = "INSERT INTO Users (username, password_hash) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $uname, $psw);
+$stmt->bind_param('ss', $uname, $psw);
 
 if ($stmt->execute()) {
     echo "User inserted successfully.";
@@ -41,4 +48,6 @@ if ($stmt->execute()) {
     echo "Error inserting User: " . $stmt->error;
 }
 $stmt->close();
+header('Location: Login.html');
+exit;
 #$verify_sql = "SELECT chat_id FROM Message WHERE '$uname' = ";
