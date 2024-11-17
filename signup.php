@@ -1,21 +1,6 @@
 <?php
-
+include 'connect.php';
 session_start();
-
-$db_server = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "chat_system";
-
-$conn = mysqli_connect(
-    $db_server,
-    $db_user,
-    $db_pass,
-    $db_name);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $uname = $_POST["uname"];
 $psw = $_POST["psw"];
@@ -31,12 +16,29 @@ echo "$tresult";
 
 if ($psw != $cpsw){
     echo "PASSWORDS DO NOT MATCH";
+    exit;
 }
 if ($result->num_rows != 0) {
     echo "USERNAME TAKEN";
+    exit;
 }
 if ($psw == $cpsw and $result->num_rows == 0){
-    $sql = "INSERT INTO MyGuests (username, password_hash)
-    VALUES ('$uname', '$psw')";
+    if (isset($_POST["uname"], $_POST["psw"])) {
+        echo "Received data: uname = " . $_POST["uname"] . ", psw = " . $_POST["psw"];
+    } else {
+        echo "POST data not received properly";
+        exit;
+    }
     echo "YOU DID IT. LOG IN NOW";
 }
+$sql = "INSERT INTO Users (username, spassword_hash) VALUES (?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iis", $uname, $psw);
+
+if ($stmt->execute()) {
+    echo "User inserted successfully.";
+} else {
+    echo "Error inserting User: " . $stmt->error;
+}
+$stmt->close();
+#$verify_sql = "SELECT chat_id FROM Message WHERE '$uname' = ";
