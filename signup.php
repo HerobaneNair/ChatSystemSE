@@ -31,7 +31,7 @@ if ($psw == $cpsw and $result->num_rows == 0){
     }
     echo "YOU DID IT. LOG IN NOW";
 }
-$sql = "INSERT INTO Users (username, spassword_hash) VALUES (?, ?)";
+$sql = "INSERT INTO Users (username, password_hash) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("iis", $uname, $psw);
 
