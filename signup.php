@@ -33,7 +33,7 @@ if ($psw == $cpsw and $result->num_rows == 0){
 }
 $sql = "INSERT INTO Users (username, password_hash) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iis", $uname, $psw);
+$stmt->bind_param("ss", $uname, $psw);
 
 if ($stmt->execute()) {
     echo "User inserted successfully.";
