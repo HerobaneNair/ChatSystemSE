@@ -1,43 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Signup Form</title> 
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
-</head>
-<body>
-<div class="container">
-    <h2>Signup Form</h2>
-    <form id="signupForm">
-        <input type="text" id="username" name="username" placeholder="Username" required>
-        <input type="password" id="password" name="password" placeholder="Password" required>
-        <button type="submit">Sign Up</button>
+<html>
+  <head>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Signup Form</title> 
+      <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
+      </head>
+  <body>
+
+    <h2>Sign Up Form</h2>
+
+    <form action="signup.php" method="post">
+  
+      
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+         
+        <label for="cpsw"><b>Confirm Password</b></label>
+        <input type="password" placeholder="Enter Password" name="cpsw" required>
+
+        <button type="submit">Login</button>
+        
+      
     </form>
-    <div class="error" id="error" style="display: none;">
-        That username already exists. Please choose a different one.
-    </div>
-    <a href="https://www.google.com" class="login-link">Already have an account? Log in instead.</a>
-</div>
-
-<script>
-    let existingUsernames = ["user1", "user2", "user3"];
-
-    document.getElementById("signupForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        let username = document.getElementById("username").value;
-        let password = document.getElementById("password").value;
-
-        if (existingUsernames.includes(username)) {
-            document.getElementById("error").style.display = "block";
-        } else {
-            existingUsernames.push(username);
-            alert("Signup successful!");
-        }
-    });
-</script>
-
-</body>
+   
+    <a href="LogIn.html" class="login-link">Already have an account? Log in instead.</a>
+  </body>
 </html>
