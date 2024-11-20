@@ -24,7 +24,6 @@ $result = mysqli_query($conn, $sql);
 if ($result->num_rows > 0) {
     $tresult = mysqli_fetch_assoc($result);
     $_SESSION["uuid"] = $tresult["uuid"];
-    $_SESSION["username"] = json_encode($uname);
     header('Location: Chat_System.php');
     exit;
 } else {
