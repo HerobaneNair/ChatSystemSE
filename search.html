@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Users</title>
+</head>
+<body>
+    <h1>Search Users</h1>
+    <input type="text" id="search" placeholder="Enter username">
+    <button onclick="searchUsers()">Search</button>
+    <div id="results"></div>
+
+    <script>
+        async function searchUsers() {
+            const username = document.getElementById('search').value;
+            if (!username) {
+                alert('Please enter a username');
+                return;
+            }
+
+            try {
+                const response = await fetch(`Chat_System.php?username=${username}`);
+                const data = await response.json();
+
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<p>No users found.</p>';
+                    return;
+                }
+
+                data.forEach(user => {
+                    const userDiv = document.createElement('div');
+                    userDiv.innerHTML = `
+                        <h2>${user.username}</h2>
+                        <h3>Chats:</h3>
+                        <ul>
+                            ${user.chats.map(chat => `
+                                <li>
+                                    <p>Chat with: ${chat.user1 === user.username ? chat.user2 : chat.user1}</p>
+                                    <ul>
+                                        ${chat.messages.map(msg => `<li>${msg.content}</li>`).join('')}
+                                    </ul>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    resultsDiv.appendChild(userDiv);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to fetch data.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -32,6 +32,14 @@
         <button type="submit" id="submitBtn">Send</button>
     </sendBox>
 
+    <a href="search.html">
+        <button>Search menu</button>
+    </a>
+
+    <a href="LogIn.html">
+        <button>Logout</button>
+    </a>
+
     <script>
         // Get the dropdown and chatBox elements
         const chatSelect = document.getElementById("chatSelect");
