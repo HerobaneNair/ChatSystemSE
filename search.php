@@ -5,10 +5,9 @@ session_start();
 
 $uuid = $_SESSION["uuid"];
 
-$conn = new mysqli($servername, $username, $password, $dbname); 
+if (!isset($_SESSION["uuid"])) {
+    die(json_encode(["error" => "User not logged in"])); 
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['username'])) {
@@ -48,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['username'])) {
 
         $chats = [];
         while ($chat = $chatsResult->fetch_assoc()) {
-            $chatId = $chat['chat_id'];
+            $chat_id = $chat['chat_id'];
 
             // Fetch messages for the chat
             $msgStmt = $conn->prepare("
@@ -56,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['username'])) {
                 FROM Message 
                 WHERE chat_id = ?
             ");
-            $msgStmt->bind_param("i", $chat_Id);
+            $msgStmt->bind_param("i", $chat_id);
             $msgStmt->execute();
             $msgResult = $msgStmt->get_result();
 
