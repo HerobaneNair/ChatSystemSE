@@ -4,56 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Users</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
+    <style>
+        #searchSection {
+            display: none; /*Needs to be like this so its hidden at first*/ 
+            margin-top: 10px;
+        }
+        #back2chat {
+            display: block;
+            height: 50px;
+            width: 50%;
+            margin-top: 10px;
+        }
+        body {
+            padding-bottom: 80px; 
+        }
+    </style>
 </head>
 <body>
-    <h1>Search Users</h1>
-    <input type="text" id="search" placeholder="Enter username">
-    <button onclick="searchUsers()">Search</button>
-    <div id="results"></div>
+    <h1>Chat System</h1>
+    <div>
+        <button id="searcher">Search</button>
+        <div id="searchSection">
+            <input type="text" id="searchInput" placeholder="Enter username">
+            <button id="contacter">Contact</button>
+            <button id="canceller">Cancel</button>
+        </div>
+    </div>
+
+    <button id="back2chat">Go Back to Chatting</button>
 
     <script>
-        async function searchUsers() {
-            const username = document.getElementById('search').value;
+        const searcher = document.getElementById('searcher');
+        const searchSection = document.getElementById('searchSection');
+        const searchInput = document.getElementById('searchInput');
+        const contacter = document.getElementById('contacter');
+        const canceller = document.getElementById('canceller');
+        const back2chat = document.getElementById('back2chat');
+
+        // Event listener for going back to the chat system
+        back2chat.addEventListener('click', () => {
+            window.location.href = 'Chat_System.php';
+        });
+
+        // Showing input box and buttons
+        searcher.addEventListener('click', () => {
+            searchSection.style.display = 'block';
+            searcher.style.display = 'none';
+        });
+
+        // Hiding the input box and buttons
+        canceller.addEventListener('click', () => {
+            searchSection.style.display = 'none';
+            searcher.style.display = 'block';
+            searchInput.value = ''; // Clear input
+        });
+
+        // Contact button
+        contacter.addEventListener('click', async () => {
+            const username = searchInput.value.trim();
             if (!username) {
                 alert('Please enter a username');
                 return;
             }
 
             try {
-                const response = await fetch(`Chat_System.php?username=${username}`);
+                const response = await fetch('search.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username })
+                });
                 const data = await response.json();
 
-                const resultsDiv = document.getElementById('results');
-                resultsDiv.innerHTML = '';
-
-                if (data.length === 0) {
-                    resultsDiv.innerHTML = '<p>No users found.</p>';
-                    return;
+                if (data.error) {
+                    alert(data.error);
+                } else if (data.exists) {
+                    alert('You already have a chat with this user');
+                } else if (data.validUser) {
+                    // If user exists and there's no chat, create chat
+                    const chatResponse = await fetch('create_chat.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username })
+                    });
+                    const chatData = await chatResponse.json();
+                    if (chatData.success) {
+                        alert('Started a chat with this user');
+                        canceller.click(); // Simulates resetting through canceller cuz that's easier
+                    }
+                } else {
+                    // User doesn't exist
+                    alert('User does not exist'); 
+                    //Tried making a different title instead of localhost says
+                    //but it's not possible according to stackoverflow
+                    //wanted to make it say "Error!" [or Success when it makes the chat]
                 }
-
-                data.forEach(user => {
-                    const userDiv = document.createElement('div');
-                    userDiv.innerHTML = `
-                        <h2>${user.username}</h2>
-                        <h3>Chats:</h3>
-                        <ul>
-                            ${user.chats.map(chat => `
-                                <li>
-                                    <p>Chat with: ${chat.user1 === user.username ? chat.user2 : chat.user1}</p>
-                                    <ul>
-                                        ${chat.messages.map(msg => `<li>${msg.content}</li>`).join('')}
-                                    </ul>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `;
-                    resultsDiv.appendChild(userDiv);
-                });
             } catch (error) {
                 console.error('Error:', error);
-                alert('Failed to fetch data.');
+                alert('Something messed up. Please delete your internet');
             }
-        }
+        });
     </script>
 </body>
 </html>

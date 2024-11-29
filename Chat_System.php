@@ -33,7 +33,7 @@
     </sendBox>
 
     <a href="search.html">
-        <button>Search menu</button>
+        <button>Search for User</button>
     </a>
 
     <a href="LogIn.html">
