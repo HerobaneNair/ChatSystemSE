@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Signup Form</title> 
-      <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
-      </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title> 
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
+  </head>
   <body>
 
     <h2>Sign Up Form</h2>
 
-    <form action="signup.php" method="post">
-  
-      
+    <form action="signup.php" method="post" onsubmit="return validateSignup()">
         <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
+        <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
         <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
+        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
          
         <label for="cpsw"><b>Confirm Password</b></label>
-        <input type="password" placeholder="Enter Password" name="cpsw" required>
+        <input type="password" placeholder="Confirm Password" name="cpsw" id="cpsw" required>
 
-        <button type="submit">Login</button>
-        
-      
+        <button type="submit">Sign Up</button>
     </form>
-   
+
     <a href="LogIn.html" class="login-link">Already have an account? Log in instead.</a>
+
+    <script>
+        function validateSignup() {
+            const password = document.getElementById('psw').value;
+            const confirmPassword = document.getElementById('cpsw').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+            return true;
+        }
+    </script>
   </body>
 </html>

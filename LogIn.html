@@ -4,14 +4,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
-</head>
+    <title>Login Form</title>
+  </head>
   <body>
 
     <h2>Login Form</h2>
 
     <form action="signinprocess.php" method="post">
-  
-      
         <label for="uname"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="uname" required>
 
@@ -19,13 +18,15 @@
         <input type="password" placeholder="Enter Password" name="psw" required>
             
         <button type="submit">Login</button>
-      
     </form>
       
-      <span class="psw">Forgot <a href="placehold2.html">password?</a></span>
-      <p></p>
-      <p></p>
-      <span class="psw"> <a href="SignupForm.html">Sign Up</a></span>
-    </form>
+    <div>
+        <span class="psw"><a href="forgot.html">Forgot Password?</a></span>
+    </div>
+      
+    <div>
+        <span class="psw"><a href="SignupForm.html">Sign Up</a></span>
+    </div>
+
   </body>
 </html>
