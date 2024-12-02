@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Users</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
@@ -14,16 +13,41 @@
         #back2chat {
             display: block;
             height: 50px;
-            width: 50%;
-            margin-top: 10px;
+            width: 229px;
         }
         body {
             padding-bottom: 80px; 
         }
+        .eyes-container {
+          display: flex;
+          gap: 30px;
+          margin-top: 20px;
+        }
+        .eye {
+          width: 100px;
+          height: 100px;
+          background-color: white;
+          border-radius: 50%;
+          position: relative;
+          border: 5px solid black;
+          opacity: 0.2;
+          transition: opacity 0.2s ease;
+        }
+        .pupil {
+          width: 30px;
+          height: 30px;
+          background-color: black;
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          transition: width 0.2s ease, height 0.2s ease;
+        }
     </style>
 </head>
 <body>
-    <h1>Chat System</h1>
+    <h2>Talk to a new user</h2>
     <div>
         <button id="searcher">Search</button>
         <div id="searchSection">
@@ -34,6 +58,15 @@
     </div>
 
     <button id="back2chat">Go Back to Chatting</button>
+
+    <div class="eyes-container">
+      <div class="eye" id="left-eye">
+        <div class="pupil"></div>
+      </div>
+      <div class="eye" id="right-eye">
+        <div class="pupil"></div>
+      </div>
+    </div>
 
     <script>
         const searcher = document.getElementById('searcher');
@@ -95,7 +128,7 @@
                     const chatData = await chatResponse.json();
                     if (chatData.success) {
                         alert('Started a chat with this user');
-                        canceller.click(); // Simulates resetting through canceller cuz that's easier
+                        back2chat.click(); // Simulates resetting through back2chat cuz that's easier and sends them back to chatting after alert
                     }
                 } else {
                     // User doesn't exist
@@ -108,6 +141,49 @@
                 console.error('Error:', error);
                 alert('Something messed up. Please delete your internet');
             }
+        });
+
+        document.addEventListener('mousemove', (event) => {
+          const leftEye = document.getElementById('left-eye');
+          const rightEye = document.getElementById('right-eye');
+          const eyes = [leftEye, rightEye];
+
+          const leftRect = leftEye.getBoundingClientRect();
+          const rightRect = rightEye.getBoundingClientRect();
+          const centerX = (leftRect.left + leftRect.width / 2 + rightRect.left + rightRect.width / 2) / 2;
+          const centerY = (leftRect.top + leftRect.height / 2 + rightRect.top + rightRect.height / 2) / 2;
+          
+          const changeInX = event.clientX - centerX;
+          const changeInY = event.clientY - centerY;
+          const distance = Math.hypot(changeInX, changeInY);
+          const maxDistance = 300; //like pixels
+          const opacity = Math.min(1, 1 - distance / maxDistance);
+        
+          eyes.forEach(eye => {
+            eye.style.opacity = opacity;
+          });
+
+          eyes.forEach(eye => {
+            const pupil = eye.querySelector('.pupil');
+            const rect = eye.getBoundingClientRect();
+            const eyeCenterX = rect.left + rect.width / 2;
+            const eyeCenterY = rect.top + rect.height / 2;
+            const changeInEyeX = event.clientX - eyeCenterX;
+            const changeInEyeY = event.clientY - eyeCenterY;
+            const angle = Math.atan2(changeInEyeY, changeInEyeX);
+            const temp1 = 1.5 * Math.min(eye.clientWidth / 4, Math.hypot(changeInEyeX, changeInEyeY) / 3);
+            const pupilX = temp1 * Math.cos(angle);
+            const pupilY = temp1 * Math.sin(angle);
+
+            pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
+            
+            // Adjust pupil size based on distance to mouse
+            const minPupilSize = 20; // Minimum pupil size
+            const maxPupilSize = 50; // Maximum pupil size
+            const newPupilSize = Math.max(minPupilSize, maxPupilSize - distance / 10);
+            pupil.style.width = `${newPupilSize}px`;
+            pupil.style.height = `${newPupilSize}px`;
+          });
         });
     </script>
 </body>
