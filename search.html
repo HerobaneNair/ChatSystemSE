@@ -13,7 +13,7 @@
         #back2chat {
             display: block;
             height: 50px;
-            width: 229px; /*Aligns it with the other buttons (at least on my screen) */
+            width: 200px;
         }
         body {
             padding-bottom: 80px; 
@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-    <h2>Chat with new user</h2>
+    <h3>Chat with new user</h3>
     <div>
         <button id="searcher">Search</button>
         <div id="searchSection">
@@ -46,20 +46,22 @@
             window.location.href = 'Chat_System.php';
         });
 
-        // Showing input box and buttons
+        // Showing input box and buttons and changing width of the back button
         searcher.addEventListener('click', () => {
             searchSection.style.display = 'block';
             searcher.style.display = 'none';
+            back2chat.style.width = '229px'; // Change width when searching
         });
 
-        // Hiding the input box and buttons
+        // Hiding the input box and buttons and resetting width of the back button
         canceller.addEventListener('click', () => {
             searchSection.style.display = 'none';
             searcher.style.display = 'block';
             searchInput.value = ''; // Clear input
+            back2chat.style.width = '200px'; // Reset width when canceled
         });
 
-        // Contact button
+        // Contact button functionality
         contacter.addEventListener('click', async () => {
             const username = searchInput.value.trim();
             if (!username) {
@@ -93,14 +95,11 @@
                     const chatData = await chatResponse.json();
                     if (chatData.success) {
                         alert('Started a chat with this user');
-                        canceller.click(); // Simulates resetting through canceller cuz that's easier
+                        canceller.click(); // Simulates resetting through canceller because that's easier
                     }
                 } else {
                     // User doesn't exist
-                    alert('User does not exist'); 
-                    //Tried making a different title instead of localhost says
-                    //but it's not possible according to stackoverflow
-                    //wanted to make it say "Error!" [or Success when it makes the chat]
+                    alert('User does not exist');
                 }
             } catch (error) {
                 console.error('Error:', error);
