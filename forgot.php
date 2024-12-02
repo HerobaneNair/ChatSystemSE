@@ -12,11 +12,8 @@ if ($newPassword !== $confirmPassword) {
 }
 
 // Check if username exists
-$sql = "SELECT `uuid` FROM `users` WHERE `username` = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param('s', $username);
-$stmt->execute();
-$result = $stmt->get_result();
+$sql = "SELECT `uuid` FROM `users` WHERE `username` = '$username'";
+$result = $conn->query($sql);
 
 if ($result->num_rows == 0) {
     echo "<script type='text/javascript'>alert('That username does not exist'); window.location.href = 'forgot.html';</script>";
@@ -24,17 +21,12 @@ if ($result->num_rows == 0) {
 }
 
 // Update password
-$updateSql = "UPDATE `users` SET `password_hash` = ? WHERE `username` = ?";
-$updateStmt = $conn->prepare($updateSql);
-$updateStmt->bind_param('ss', $newPassword, $username);
-
-if ($updateStmt->execute()) {
+$updateSql = "UPDATE `users` SET `password_hash` = '$newPassword' WHERE `username` = '$username'";
+if ($conn->query($updateSql) === TRUE) {
     echo "<script type='text/javascript'>alert('Password changed'); window.location.href = 'Login.html';</script>";
 } else {
     echo "<script type='text/javascript'>alert('Error updating password. Please try again.'); window.location.href = 'forgot.html';</script>";
 }
 
-$stmt->close();
-$updateStmt->close();
 $conn->close();
 ?>
